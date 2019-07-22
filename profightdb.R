@@ -4,7 +4,7 @@ library(stringr)
 
 base <- 'http://www.profightdb.com/top-rated-matches.html?pg=1&year='
 
-urls <- paste(base,1983:2018,sep='')
+urls <- paste(base,1983:2019,sep='')
 
 tables_1 <- urls[[1]] %>% read_html() %>% html_nodes(xpath='/html/body/div/div[1]/div[3]/div[2]/div[3]/div/div/table') %>% html_table()
 tables_2 <- urls[[2]] %>% read_html() %>% html_nodes(xpath='/html/body/div/div[1]/div[3]/div[2]/div[3]/div/div/table') %>% html_table()
@@ -42,6 +42,7 @@ tables_33 <- urls[[33]] %>% read_html() %>% html_nodes(xpath='/html/body/div/div
 tables_34 <- urls[[34]] %>% read_html() %>% html_nodes(xpath='/html/body/div/div[1]/div[3]/div[2]/div[3]/div/div/table') %>% html_table()
 tables_35 <- urls[[35]] %>% read_html() %>% html_nodes(xpath='/html/body/div/div[1]/div[3]/div[2]/div[3]/div/div/table') %>% html_table()
 tables_36 <- urls[[36]] %>% read_html() %>% html_nodes(xpath='/html/body/div/div[1]/div[3]/div[2]/div[3]/div/div/table') %>% html_table()
+tables_37 <- urls[[37]] %>% read_html() %>% html_nodes(xpath='/html/body/div/div[1]/div[3]/div[2]/div[3]/div/div/table') %>% html_table()
 
 table_1 <- tables_1[[1]]
 table_2 <- tables_2[[1]]
@@ -79,8 +80,9 @@ table_33 <- tables_33[[1]]
 table_34 <- tables_34[[1]]
 table_35 <- tables_35[[1]]
 table_36 <- tables_36[[1]]
+table_37 <- tables_37[[1]]
 
-all <- rbind(table_1,table_2,table_3,table_4,table_5,table_6,table_7,table_8,table_9,table_10,table_11,table_12,table_13,table_14,table_15,table_16,table_17,table_18,table_19,table_20,table_21,table_22,table_23,table_24,table_25,table_26,table_27,table_28,table_29,table_30,table_31,table_32,table_33,table_34,table_35,table_36)
+all <- rbind(table_1,table_2,table_3,table_4,table_5,table_6,table_7,table_8,table_9,table_10,table_11,table_12,table_13,table_14,table_15,table_16,table_17,table_18,table_19,table_20,table_21,table_22,table_23,table_24,table_25,table_26,table_27,table_28,table_29,table_30,table_31,table_32,table_33,table_34,table_35,table_36,table_37)
 
 colnames(all)[3] <- 'card_name'
 colnames(all)[4] <- 'first_wrestler'
@@ -119,8 +121,9 @@ all$card_name <- gsub("\n",'',all$card_name)
 all$card_name <- gsub("\t",'',all$card_name)
 
 wwe <- subset(all, all$promotion=='WWE')
+nxt <- subset(all, all$promotion=='NXT')
 wcw <- subset(all, all$promotion=='WCW')
-network <- rbind(wwe,wcw)
+network <- rbind(wwe,wcw,nxt)
 network <- subset(network, network$rating >= 4.5)
 
 write.csv(network, file="network.csv")
